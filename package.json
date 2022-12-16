@@ -1,0 +1,31 @@
+{
+  "name": "ver1.0.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabuchaan/gestion-de-stock.git"
+  },
+  "keywords": [
+    "app",
+    "project",
+    "ifp"
+  ],
+  "author": "Gabriel Nakamura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabuchaan/gestion-de-stock/issues"
+  },
+  "homepage": "https://github.com/gabuchaan/gestion-de-stock#readme",
+  "devDependencies": {
+    "electron": "^22.0.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.4"
+  }
+}
