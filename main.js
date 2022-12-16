@@ -1,9 +1,10 @@
+const { count, log } = require('console');
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./test.db');
 
-let  mainWindow;
+let mainWindow;
 let loginWindow;
 
 
@@ -66,45 +67,117 @@ app.on('window-all-closed', () => {
 
 // ----------------- IPC ------------------
 
-ipcMain.handle('login', (event, obj) => {
-    let result = validateLogin(obj);
+ipcMain.handle('login', async (event, obj) => {
+    let result = await validateLogin(obj);
     if (!result) {
-        return {'login': false}
+        return { 'login': false }
     }
 });
 
-ipcMain.handle('register', (event, obj) => {
-    validateRegister(obj);
+ipcMain.handle('register', async (event, obj) => {
+    // console.log(validateRegister(obj));
+    // validateRegister(obj);
+    // let result;
+    // await getCountByName(obj).then(val => val = result);
+
+    // asyncFun(obj).then(val => console.log(val));
+
+    result = await asyncFun(obj);
+    return result;
 });
 
 // ----------------- FUNCTIONS ----------------
 
 
-        // ----- LOGIN -----
+// ----- LOGIN -----
 
 function validateLogin(obj) {
+
     const password = obj.password;
     const userName = obj.userName;
-    db.all("SELECT * FROM users where name = ? AND password = ?", [userName, password], (err, rows) => {
-        if (rows.length > 0) {
-            createMainWindow();
-            mainWindow.show();
-            loginWindow.close();
-        }
-        return false
-    });
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM users where name = ? AND password = ?", [userName, password], (err, rows) => {
+            if (rows.length > 0) {
+                createMainWindow();
+                mainWindow.show();
+                loginWindow.close();
+            }
+            return resolve(false);
+        });
+    })
     // db.close();
 }
 
-function showNotification() {
-    new Notification({
-        title: "login",
-        body: "Login incorrect"
-    }).show();
-}
-
-        // ----- REGISTER -----
+// ----- REGISTER -----
 
 function validateRegister(obj) {
-    console.log(obj);
+    let count;
+    db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
+        if (err) {
+            return err;
+        }
+
+        console.log(row["count(*)"]);
+
+        return 33;
+    });
+
+    // })
+    // const email = obj.email;
+    // const userName = obj.userName;
+    // result = db.all("SELECT * FROM users where name = ?", [userName],(err, rows) => {
+    //     console.log(rows.name);
+    // });
+
+    // console.log(result);
+
 }
+
+function getCountByName(obj) {
+    try {
+        return new Promise((resolve, reject) => {
+            db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
+                if (err) {
+                    return reject(err)
+                } if (row["count(*)"] != 0) {
+                    return resolve("El nombre ya está usado")
+                } else {
+                    return resolve(true)
+                }
+            })
+        })
+        
+    } catch (error) {
+        return error;
+    }
+}
+
+function getCountByEmail(obj) {
+    try {
+        return new Promise((resolve, reject) => {
+            console.log("ok");
+            db.get(`select count(*) from users where email = ?`, obj.email, (err, row) => {
+                if (err) {
+                    return reject(err)
+                } if (row["count(*)"] != 0) {
+                    return resolve("El nombre ya está usado")
+                } else {
+                    return resolve(true)
+                }
+            })
+        })
+        
+    } catch (error) {
+        return error;
+    }
+}
+
+async function asyncFun(params) {
+
+    const resultName = await getCountByName(params);
+    const resultEmail = await getCountByEmail(params);
+
+
+    return result;
+}
+
