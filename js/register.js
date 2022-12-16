@@ -1,7 +1,7 @@
 const registerBtn = document.getElementById('registerBtn');
+const message = document.getElementById('message');
 
 registerBtn.addEventListener('click', async (event)=>{
-    console.log("ok");
     userName = document.getElementById('userNameInput');
     email = document.getElementById('emailInput');
     password = document.getElementById('passwordInput');
@@ -13,4 +13,9 @@ registerBtn.addEventListener('click', async (event)=>{
     }
 
     result = await window.tryRegister.register(obj);
+    if (result.register === "ok") {
+        await window.tryRegister.login(obj);
+    }else{
+        message.innerText = result.register;
+    }
 })

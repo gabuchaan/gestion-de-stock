@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('tryLogin', {
 
 contextBridge.exposeInMainWorld('tryRegister', {
     register : (obj) => ipcRenderer.invoke("register", obj),
+    login : (obj) => ipcRenderer.invoke("login", obj),
 })
 
 

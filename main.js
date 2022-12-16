@@ -1,5 +1,7 @@
 const { count, log } = require('console');
+const { create } = require('domain');
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { createSecureServer } = require('http2');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./test.db');
@@ -75,15 +77,12 @@ ipcMain.handle('login', async (event, obj) => {
 });
 
 ipcMain.handle('register', async (event, obj) => {
-    // console.log(validateRegister(obj));
-    // validateRegister(obj);
-    // let result;
-    // await getCountByName(obj).then(val => val = result);
-
-    // asyncFun(obj).then(val => console.log(val));
-
-    result = await asyncFun(obj);
-    return result;
+    let result = await validateRegister(obj);
+    console.log(result);
+    if (result === "ok") {
+        await createUser(obj);
+    }
+    return {'register': result};
 });
 
 // ----------------- FUNCTIONS ----------------
@@ -111,73 +110,37 @@ function validateLogin(obj) {
 // ----- REGISTER -----
 
 function validateRegister(obj) {
-    let count;
-    db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
-        if (err) {
-            return err;
-        }
-
-        console.log(row["count(*)"]);
-
-        return 33;
-    });
-
-    // })
-    // const email = obj.email;
-    // const userName = obj.userName;
-    // result = db.all("SELECT * FROM users where name = ?", [userName],(err, rows) => {
-    //     console.log(rows.name);
-    // });
-
-    // console.log(result);
-
-}
-
-function getCountByName(obj) {
     try {
-        return new Promise((resolve, reject) => {
-            db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
-                if (err) {
-                    return reject(err)
-                } if (row["count(*)"] != 0) {
-                    return resolve("El nombre ya está usado")
-                } else {
-                    return resolve(true)
-                }
+        return new Promise( (resolve, reject) => {
+            db.serialize( () => {
+                db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
+                    if (err) {
+                        return reject(err)
+                    }
+                    if (row["count(*)"] != 0) {
+                        return resolve("El nombre ya está usado")
+                    } else {
+                        db.get(`select count(*) from users where email = ?`, obj.email, (err, row) => {
+                            if (err) {
+                                return reject(err)
+                            }
+                            if (row["count(*)"] != 0) {
+                                return resolve("El Email ya está usado")
+                            }else{
+                                return resolve("ok");
+                            }
+                        });
+                    }
+                });
             })
         })
-        
     } catch (error) {
         return error;
     }
 }
 
-function getCountByEmail(obj) {
-    try {
-        return new Promise((resolve, reject) => {
-            console.log("ok");
-            db.get(`select count(*) from users where email = ?`, obj.email, (err, row) => {
-                if (err) {
-                    return reject(err)
-                } if (row["count(*)"] != 0) {
-                    return resolve("El nombre ya está usado")
-                } else {
-                    return resolve(true)
-                }
-            })
-        })
-        
-    } catch (error) {
-        return error;
-    }
-}
-
-async function asyncFun(params) {
-
-    const resultName = await getCountByName(params);
-    const resultEmail = await getCountByEmail(params);
-
-
-    return result;
+function createUser(obj) {
+    db.run(`insert into users(name,email,password) values(?,?,?)`, [obj.userName, obj.email, obj.password]);
+    console.log("ok");
 }
 
