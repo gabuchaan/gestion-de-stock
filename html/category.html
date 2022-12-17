@@ -34,7 +34,7 @@
             <!-- Menu options -->
             <h2 class="mt-5">MENU</h2>
             <div class="d-grid gap-2">
-                <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
+                <a href="/html/" class="btn btn-primary mt-4" type="button">Category</a>
                 <button class="btn btn-primary mt-4" type="button">Ver datos</button>
                 <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
                 <button class="btn btn-primary mt-4" type="button">Favoritos</button>
@@ -45,47 +45,25 @@
         <!-- ----- Main Contents ----- -->
         <div class="col-8 text-center">
             <br>
-            <!-- Choice Category -->
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Categories
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </div>
-
-            <!-- Products -->
-            <h2 class="mt-4">Category</h2>
+            <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
             <br>
-            <table class="table">
-                <tbody>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2>Create category</h2>
+            <br>
+            <form>
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Category name</label>
+                    <input type="text" class="form-control" id="categoryName">
+                </div>
+                <button type="button" class="btn btn-danger" id="createCategoryBTN">Create</button>
+                <!-- <button type="button" class="btn btn-primary">Cancel</button> -->
+                <p id="message"></p>
+            </form>
         </div>
     </div>
 </div>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/createCategory.js"></script>
 </body>
 
 </html>

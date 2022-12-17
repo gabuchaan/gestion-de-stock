@@ -42,10 +42,11 @@ const createMainWindow = () => {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, './js/mainWindow.js')
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
+    mainWindow.webContents.openDevTools();
     mainWindow.loadFile('html/main.html');
 }
 
@@ -69,6 +70,7 @@ app.on('window-all-closed', () => {
 
 // ----------------- IPC ------------------
 
+
 ipcMain.handle('login', async (event, obj) => {
     let result = await validateLogin(obj);
     if (!result) {
@@ -84,6 +86,17 @@ ipcMain.handle('register', async (event, obj) => {
     }
     return {'register': result};
 });
+
+ipcMain.handle('createCategory', async (event, obj) => {
+    result = await validateCategory(obj);
+    console.log(result);
+    if(!result){
+        return {'createCategory': "La categoria ya existe."}
+    }
+    createCategory(obj);
+    return {'createCategory': "Se ha creado correctamente la categoria."}
+
+})
 
 // ----------------- FUNCTIONS ----------------
 
@@ -141,6 +154,22 @@ function validateRegister(obj) {
 
 function createUser(obj) {
     db.run(`insert into users(name,email,password) values(?,?,?)`, [obj.userName, obj.email, obj.password]);
-    console.log("ok");
 }
 
+// ----- CATEGORY -----
+
+function validateCategory(obj) {
+    const categoryName = obj.categoryName;
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM categories where name = ?", [categoryName], (err, rows) => {
+            if (rows.length == 0) {
+                return resolve(true)
+            }
+            return resolve(false);
+        });
+    })
+}
+
+function createCategory(obj) {
+    db.run(`insert into categories(name) values(?)`, [obj.categoryName]);
+}
