@@ -1,10 +1,11 @@
 const list = document.getElementById('categoryList');
-
-
+var query = location.search;
+var value = query.split('=');
+const userId = value[1];
 
 async function showCategoryList(params) {
     
-    result = await window.category.getAllCategories();
+    result = await window.category.getAllCategories(userId);
     console.log(result.getAllCategories);
     let html;
     result.getAllCategories.forEach(category => {

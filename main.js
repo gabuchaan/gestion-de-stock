@@ -71,9 +71,10 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('login', async (event, obj) => {
     let result = await validateLogin(obj);
-    if (!result) {
-        return { 'login': false }
-    }
+    // if (!result) {
+    //     return { 'login': false }
+    // }
+    return { 'login': result }
 });
 
 ipcMain.handle('register', async (event, obj) => {
@@ -94,8 +95,8 @@ ipcMain.handle('createCategory', async (event, obj) => {
 
 });
 
-ipcMain.handle('getAllCategories', async (event) => {
-    result = await getCategories();
+ipcMain.handle('getAllCategories', async (event, userId) => {
+    result = await getCategories(userId);
     return {'getAllCategories': result};
 });
 
@@ -121,11 +122,9 @@ function validateLogin(obj) {
     const password = obj.password;
     const userName = obj.userName;
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM users where name = ? AND password = ?", [userName, password], (err, rows) => {
-            if (rows.length > 0) {
-                createMainWindow();
-                mainWindow.show();
-                loginWindow.close();
+        db.get("SELECT * FROM users where name = ? AND password = ?", [userName, password], (err, row) => {
+            if (row != null) {
+                return resolve(row.id);
             }
             return resolve(false);
         });
@@ -174,7 +173,7 @@ function createUser(obj) {
 function validateCategory(obj) {
     const categoryName = obj.categoryName;
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM categories where name = ?", [categoryName], (err, rows) => {
+        db.all("SELECT * FROM categories where name = ? && user_id = ?", [categoryName, obj.userId], (err, rows) => {
             if (rows.length == 0) {
                 return resolve(true)
             }
@@ -184,12 +183,12 @@ function validateCategory(obj) {
 }
 
 function createCategory(obj) {
-    db.run(`insert into categories(name) values(?)`, [obj.categoryName]);
+    db.run(`insert into categories(name, user_id) values(?,?)`, [obj.categoryName, obj.userId]);
 }
 
-function getCategories() {
+function getCategories(userId) {
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM categories ", [], (err, rows) => {
+        db.all("SELECT * FROM categories where user_id = ?", [userId], (err, rows) => {
             let categories = [];
             rows.forEach(function (row) {
                 categories.push(row);

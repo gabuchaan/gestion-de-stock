@@ -11,9 +11,13 @@ loginBtn.addEventListener('click', async (event) => {
         password: password.value,
     }
 
-    incorrect = await window.tryLogin.login(obj);
-    if (!incorrect.login) {
+    // result = await window.tryLogin.login(obj);
+    // if (!result.login) {
+    //     message.innerText = "Login incorrect";
+    // }
+    result = await window.tryLogin.login(obj);
+    if (!result.login) {
         message.innerText = "Login incorrect";
     }
-    console.log(incorrect.login);
+    window.location.href = './html/main.html?user=' +  encodeURIComponent(result.login);
 })
