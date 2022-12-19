@@ -32,8 +32,6 @@ async function setCategories() {
     let html;
     let i = 1;
     result.getAllCategories.forEach(category => {
-        // html += `<a href="#" class="list-group-item list-group-item-action categoryListItem">${category.name}</a>`
-        // html += `<li><a class="dropdown-item" href="#">${category.name}</a></li>`
         html += `<option value="${i}">${category.name}</option>`
         i++;
     });
