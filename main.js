@@ -78,7 +78,6 @@ ipcMain.handle('login', async (event, obj) => {
 
 ipcMain.handle('register', async (event, obj) => {
     let result = await validateRegister(obj);
-    console.log(result);
     if (result === "ok") {
         await createUser(obj);
     }
@@ -87,7 +86,6 @@ ipcMain.handle('register', async (event, obj) => {
 
 ipcMain.handle('createCategory', async (event, obj) => {
     result = await validateCategory(obj);
-    console.log(result);
     if (!result) {
         return { 'createCategory': "La categoria ya existe." }
     }
@@ -100,6 +98,11 @@ ipcMain.handle('getAllCategories', async (event) => {
     result = await getCategories();
     return {'getAllCategories': result};
 });
+
+ipcMain.handle('getAllProducts', async (event, categoryName) => {
+    result = await getProducts(categoryName);
+    return {'getAllProducts': result};
+})
 
 // ----------------- FUNCTIONS ----------------
 
@@ -187,4 +190,18 @@ function getCategories() {
             return resolve(categories);
         });
     });
+}
+
+
+// ----- PRODUCT -----
+
+function getProducts(params) {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
+            if (rows.length == 0) {
+                return resolve(true)
+            }
+            return resolve(false);
+        });
+    })
 }

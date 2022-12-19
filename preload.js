@@ -14,5 +14,10 @@ contextBridge.exposeInMainWorld('category', {
     getAllCategories: () => ipcRenderer.invoke("getAllCategories"),
 })
 
+contextBridge.exposeInMainWorld('product', {
+    createProduct: (obj) => ipcRenderer.invoke("createProduct", obj),
+    getAllProducts: (obj) => ipcRenderer.invoke('getAllProducts', obj)
+})
+
 
 
