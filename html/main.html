@@ -9,83 +9,94 @@
     <title>Main</title>
 </head>
 
-<div class="container">
+<body>
 
-    <div class="row justify-content-center p-2">
+    <div class="container">
 
-        <!-- ----- Side Menu ----- -->
-        <div class="col-4 bg-light text-center">
-            <br>
-            <!-- userName & img -->
-            <div class="mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="../Img/UserImage/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg"
-                            class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
+        <div class="row justify-content-center p-2">
+
+            <!-- ----- Side Menu ----- -->
+            <div class="col-4 bg-light text-center">
+                <br>
+                <!-- userName & img -->
+                <div class="mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="../Img/UserImage/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg"
+                                class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Menu options -->
+                <h2 class="mt-5">MENU</h2>
+                <div class="d-grid gap-2">
+                    <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
+                    <button class="btn btn-primary mt-4" type="button">Ver datos</button>
+                    <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                    <button class="btn btn-primary mt-4" type="button">Favoritos</button>
+                    <button class="btn btn-primary mt-5" type="button">Logout</button>
+                </div>
             </div>
 
-            <!-- Menu options -->
-            <h2 class="mt-5">MENU</h2>
-            <div class="d-grid gap-2">
-                <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
-                <button class="btn btn-primary mt-4" type="button">Ver datos</button>
-                <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
-                <button class="btn btn-primary mt-4" type="button">Favoritos</button>
-                <button class="btn btn-primary mt-5" type="button">Logout</button>
-            </div>
-        </div>
+            <!-- ----- Main Contents ----- -->
+            <div class="col-8 text-center">
+                <br>
+                <!-- Choice Category -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Categories
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
 
-        <!-- ----- Main Contents ----- -->
-        <div class="col-8 text-center">
-            <br>
-            <!-- Choice Category -->
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Categories
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+                <!-- Products -->
+                <h2 class="mt-4">Category name</h2>
+                <br>
+                <table class="table">
+                    <tbody>
+                        <tr class="table-primary">
+                            <td class="text-lg-start">Mark</td>
+                            <td class="text-lg-end">Otto</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td class="text-lg-start">Mark</td>
+                            <td class="text-lg-end">Otto</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td class="text-lg-start">Mark</td>
+                            <td class="text-lg-end">Otto</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td class="text-lg-start">Mark</td>
+                            <td class="text-lg-end">Otto</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        The current link item
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                    <a class="list-group-item list-group-item-action disabled">A disabled link item</a>
+                </div> -->
             </div>
-
-            <!-- Products -->
-            <h2 class="mt-4">Category</h2>
-            <br>
-            <table class="table">
-                <tbody>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td class="text-lg-start">Mark</td>
-                        <td class="text-lg-end">Otto</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
-</div>
 
-<script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,5 @@
-const { count, log } = require('console');
-const { create } = require('domain');
+
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
-const { createSecureServer } = require('http2');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./test.db');
@@ -84,19 +82,24 @@ ipcMain.handle('register', async (event, obj) => {
     if (result === "ok") {
         await createUser(obj);
     }
-    return {'register': result};
+    return { 'register': result };
 });
 
 ipcMain.handle('createCategory', async (event, obj) => {
     result = await validateCategory(obj);
     console.log(result);
-    if(!result){
-        return {'createCategory': "La categoria ya existe."}
+    if (!result) {
+        return { 'createCategory': "La categoria ya existe." }
     }
     createCategory(obj);
-    return {'createCategory': "Se ha creado correctamente la categoria."}
+    return { 'createCategory': "Se ha creado correctamente la categoria." }
 
-})
+});
+
+ipcMain.handle('getAllCategories', async (event) => {
+    result = await getCategories();
+    return {'getAllCategories': result};
+});
 
 // ----------------- FUNCTIONS ----------------
 
@@ -124,8 +127,8 @@ function validateLogin(obj) {
 
 function validateRegister(obj) {
     try {
-        return new Promise( (resolve, reject) => {
-            db.serialize( () => {
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
                 db.get(`select count(*) from users where name = ?`, obj.userName, (err, row) => {
                     if (err) {
                         return reject(err)
@@ -139,7 +142,7 @@ function validateRegister(obj) {
                             }
                             if (row["count(*)"] != 0) {
                                 return resolve("El Email ya está usado")
-                            }else{
+                            } else {
                                 return resolve("ok");
                             }
                         });
@@ -172,4 +175,16 @@ function validateCategory(obj) {
 
 function createCategory(obj) {
     db.run(`insert into categories(name) values(?)`, [obj.categoryName]);
+}
+
+function getCategories() {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM categories ", [], (err, rows) => {
+            let categories = [];
+            rows.forEach(function (row) {
+                categories.push(row);
+            });
+            return resolve(categories);
+        });
+    });
 }

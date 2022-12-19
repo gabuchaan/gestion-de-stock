@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <title>Main</title>
+</head>
+
+<div class="container">
+
+    <div class="row justify-content-center p-2">
+
+        <!-- ----- Side Menu ----- -->
+        <div class="col-4 bg-light text-center">
+            <br>
+            <!-- userName & img -->
+            <div class="mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="../Img/UserImage/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg"
+                            class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu options -->
+            <h2 class="mt-5">MENU</h2>
+            <div class="d-grid gap-2">
+                <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
+                <button class="btn btn-primary mt-4" type="button">Ver datos</button>
+                <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                <button class="btn btn-primary mt-4" type="button">Favoritos</button>
+                <button class="btn btn-primary mt-5" type="button">Logout</button>
+            </div>
+        </div>
+
+        <!-- ----- Main Contents ----- -->
+        <div class="col-8 text-center">
+            <br>
+            <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
+            <br>
+            <h2>Create category</h2>
+            <br>
+            <form>
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Category name</label>
+                    <input type="text" class="form-control" id="categoryName">
+                </div>
+                <button type="button" class="btn btn-primary" id="createCategoryBTN">Create</button>
+                <!-- <button type="button" class="btn btn-primary">Cancel</button> -->
+                <p id="message"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/createCategory.js"></script>
+</body>
+
+</html>

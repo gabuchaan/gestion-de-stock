@@ -9,8 +9,9 @@ contextBridge.exposeInMainWorld('tryRegister', {
     login : (obj) => ipcRenderer.invoke("login", obj),
 })
 
-contextBridge.exposeInMainWorld('createNewCategory', {
+contextBridge.exposeInMainWorld('category', {
     createCategory: (obj) => ipcRenderer.invoke("createCategory", obj),
+    getAllCategories: () => ipcRenderer.invoke("getAllCategories"),
 })
 
 

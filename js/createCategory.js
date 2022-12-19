@@ -8,6 +8,6 @@ createCategoryBTN.addEventListener('click', async (event) => {
         categoryName: categoryName.value,
     }
 
-    result = await window.createNewCategory.createCategory(obj);
+    result = await window.category.createCategory(obj);
     message.innerText = result.createCategory
 })
