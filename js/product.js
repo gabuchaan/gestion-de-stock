@@ -1,5 +1,6 @@
 var query = location.search;
 var value = query.split('=');
+const list = document.getElementById('productList');
 
 categoryName = decodeURIComponent(value[1]);
 // console.log(decodeURIComponent(value[1]));

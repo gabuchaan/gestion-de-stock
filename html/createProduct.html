@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <title>Main</title>
+</head>
+
+<div class="container">
+
+    <div class="row justify-content-center p-2">
+
+        <!-- ----- Side Menu ----- -->
+        <div class="col-4 bg-light text-center">
+            <br>
+            <!-- userName & img -->
+            <div class="mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="../Img/UserImage/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg"
+                            class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu options -->
+            <h2 class="mt-5">MENU</h2>
+            <div class="d-grid gap-2">
+                <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
+                <button class="btn btn-primary mt-4" type="button">Ver datos</button>
+                <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                <button class="btn btn-primary mt-4" type="button">Favoritos</button>
+                <button class="btn btn-primary mt-5" type="button">Logout</button>
+            </div>
+        </div>
+
+        <!-- ----- Main Contents ----- -->
+        <div class="col-8 text-center">
+            <br>
+            <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
+            <br>
+            <h2>Create product</h2>
+            <br>
+            <form>
+                <div class="mb-3">
+                    <label for="productName" class="form-label">Product name</label>
+                    <input type="text" class="form-control" id="productName">
+                </div>
+                <select id="ddlViewBy">
+                    <option value="1">test1</option>
+                    <option value="2">test2</option>
+                    <option value="3">test3</option>
+                </select>
+                <div class="mb-3">
+                    <label for="productUrl" class="form-label">Product Url</label>
+                    <input type="url" class="form-control" id="productUrl">
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Cantidad</label>
+                    <input type="text" class="form-control" id="cantidad">
+                </div>
+                <div class="mb-3">
+                    <label for="cantidadMin" class="form-label">Cantidad minimo</label>
+                    <input type="text" class="form-control" id="cantidadMin">
+                </div>
+                <div class="mb-3">
+                    <label for="productImg" class="form-label">Imagen</label>
+                    <input type="url" class="form-control" id="productImg">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="description">
+                </div>
+                <button type="button" class="btn btn-primary" id="createProductBTN">Create</button>
+                <!-- <button type="button" class="btn btn-primary">Cancel</button> -->
+                <p id="message"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/createProduct.js"></script>
+</body>
+
+</html>

@@ -102,7 +102,14 @@ ipcMain.handle('getAllCategories', async (event) => {
 ipcMain.handle('getAllProducts', async (event, categoryName) => {
     result = await getProducts(categoryName);
     return {'getAllProducts': result};
-})
+});
+
+ipcMain.handle('createProduct', async (event, obj) => {
+    categoryId = await getCategoryId(obj);
+    console.log(categoryId);
+    result = await createProduct(obj,categoryId);
+    return {'createProduct': result};
+});
 
 // ----------------- FUNCTIONS ----------------
 
@@ -197,11 +204,24 @@ function getCategories() {
 
 function getProducts(params) {
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
-            if (rows.length == 0) {
-                return resolve(true)
-            }
-            return resolve(false);
+        db.all("SELECT products.name FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
+            let products = [];
+            rows.forEach(function (row) {
+                products.push(row);
+            });
+            return resolve(products);
         });
     })
+}
+
+function getCategoryId(params) {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT * FROM categories where name = ?", [params.productCategory], (err, rows) => {
+            return resolve(rows.id);
+        });
+    })
+}
+
+function createProduct(obj, categoryId) {
+    db.run(`insert into products(name,category_id,image,web_url,stock,description,stock_min) values(?,?,?,?,?,?,?)`, [obj.productName, categoryId, obj.productImg, obj.productUrl, obj.cantidad, obj.description, obj.cantidadMin]);
 }
