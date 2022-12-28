@@ -36,7 +36,7 @@
                 <!-- Menu options -->
                 <h2 class="mt-5">MENU</h2>
                 <div class="d-grid gap-2">
-                    <a href="./category.html" class="btn btn-primary mt-4" type="button">Category</a>
+                    <button id="categoryBTN" class="btn btn-primary mt-4" type="button">Category</button>
                     <button class="btn btn-primary mt-4" type="button">Ver datos</button>
                     <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
                     <button class="btn btn-primary mt-4" type="button">Favoritos</button>
@@ -47,22 +47,25 @@
             <!-- ----- Main Contents ----- -->
             <div class="col-8 text-center">
                 <br>
+                <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
+                <br>
                 <!-- Categories -->
                 <h2 class="mt-4">Products</h2>
                 <br>
                 <div class="list-group" id="productList">
-                    
+
                     <a href="#" class="list-group-item list-group-item-action">A second link item</a>
                     <a href="#" class="list-group-item list-group-item-action">A third link item</a>
                     <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
                 </div>
                 <br>
-                <a href="./createProduct.html" type="button" class="btn btn-primary" id="createCategoryBTN">Create Product</a>
+                <button type="button" class="btn btn-primary" id="createProductBTN">Create Product</a>
             </div>
         </div>
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/product.js"></script>
+    <script type="module" src="../js/product.js"></script>
 </body>
+
 </html>

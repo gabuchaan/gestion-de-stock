@@ -1,6 +1,9 @@
 const createProductBTN = document.getElementById('createProductBTN');
 const message = document.getElementById('message');
 const productCategory = document.getElementById('ddlViewBy');
+let params = new URLSearchParams(location.search);
+const userId = params.get('user');
+import { setClickEventOfMenu } from './common.js'; 
 
 createProductBTN.addEventListener('click', async (event) => {
     const productName = document.getElementById('productName');
@@ -20,15 +23,18 @@ createProductBTN.addEventListener('click', async (event) => {
         description: description.value,
         productCategory: productCategory.options[productCategory.selectedIndex].text,
     }
-    console.log(obj);
 
-    result = await window.product.createProduct(obj);
+    let result = await window.product.createProduct(obj);
     console.log(result);
-    // message.innerText = result.createCategory
+    if (!result.createProduct) {
+        message.innerText = "El producto ya exsiste";
+    }
 });
 
-async function setCategories() {
-    result = await window.category.getAllCategories();
+async function setCategories(userId) {
+    console.log(userId);
+    let result = await window.category.getAllCategories(userId);
+    console.log(result);
     let html;
     let i = 1;
     result.getAllCategories.forEach(category => {
@@ -37,5 +43,6 @@ async function setCategories() {
     });
     productCategory.innerHTML = html;
 }
-
-setCategories();
+console.log(userId);
+setCategories(userId);
+setClickEventOfMenu(userId);

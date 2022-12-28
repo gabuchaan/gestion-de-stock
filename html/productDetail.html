@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <title>Main</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="row justify-content-center p-2">
+
+            <!-- ----- Side Menu ----- -->
+            <div class="col-4 bg-light text-center">
+                <br>
+                <!-- userName & img -->
+                <div class="mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="../Img/UserImage/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg"
+                                class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu options -->
+                <h2 class="mt-5">MENU</h2>
+                <div class="d-grid gap-2">
+                    <button id="categoryBTN" class="btn btn-primary mt-4" type="button">Category</button>
+                    <button class="btn btn-primary mt-4" type="button">Ver datos</button>
+                    <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                    <button class="btn btn-primary mt-4" type="button">Favoritos</button>
+                    <button class="btn btn-primary mt-5" type="button">Logout</button>
+                </div>
+            </div>
+
+            <!-- ----- Main Contents ----- -->
+            <div class="col-8 text-center">
+                <br>
+                <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
+                <br>
+                <!-- Products -->
+                <h2 class="mt-4" id="productTitle">Product</h2>
+                <br>
+
+                <div class="row justify-content-center p-2">
+                    <div class="col-3 bg-light text-center">
+                        <img src="../Img/sushi.png"
+                            class="img-fluid rounded-start" alt="...">
+                        <p></p>
+                        <button type="button" class="btn btn-primary" id="editProductBTN">Modificar Product</a>
+                    </div>
+
+                    <div class="col-9 text-center">
+                        <div class="list-group" id="productList">
+                            <div class="list-group-item list-group-item-action">
+                                <div class="row align-items-start">
+                                    <div class="col">
+                                        URL
+                                    </div>
+                                    <div class="col" id="urlValue">
+                                        https://kkkkkkkk
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="row align-items-start">
+                                    <div class="col">
+                                        Cantidad
+                                    </div>
+                                    <div class="col" id="quantityValue">
+                                        2
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="row align-items-start">
+                                    <div class="col">
+                                        Cantidad minimo
+                                    </div>
+                                    <div class="col" id="minQuantityValue">
+                                        One of three columns
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="row align-items-start">
+                                    <div class="col">
+                                        Categoria
+                                    </div>
+                                    <div class="col" id="categoryValue">
+                                        hola
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 100px" id="descriptionValue" disabled></textarea>
+                            <label for="floatingTextarea2">Descrpcion</label>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../js/productDetail.js"></script>
+</body>
+
+</html>

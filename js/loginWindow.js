@@ -2,7 +2,6 @@ const loginBtn = document.getElementById('login');
 let incorrect;
 message = document.getElementById('output');
 
-// message.innerText = "ko";
 loginBtn.addEventListener('click', async (event) => {
     userName = document.getElementById('userName');
     password =document.getElementById('password');

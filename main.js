@@ -7,8 +7,9 @@ const db = new sqlite3.Database('./test.db');
 let mainWindow;
 let loginWindow;
 
-
+// ---------------------------------------------
 // -------------- WINDOW CREATOR ---------------
+// ---------------------------------------------
 
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
@@ -47,8 +48,9 @@ const createMainWindow = () => {
     mainWindow.webContents.openDevTools();
     mainWindow.loadFile('html/main.html');
 }
-
+// -------------------------------------------
 // -------------- APP MANAGER ----------------
+// -------------------------------------------
 
 app.whenReady().then(() => {
     createLoginWindow();
@@ -66,14 +68,19 @@ app.on('window-all-closed', () => {
     }
 });
 
+// ----------------------------------------
 // ----------------- IPC ------------------
+// ----------------------------------------
 
+        // ----- LOGIN -----
 
 ipcMain.handle('login', async (event, obj) => {
     let result = await validateLogin(obj);
     // if (!result) {
     //     return { 'login': false }
     // }
+    // console.log(result);
+    // global.userId = result;
     return { 'login': result }
 });
 
@@ -84,6 +91,8 @@ ipcMain.handle('register', async (event, obj) => {
     }
     return { 'register': result };
 });
+
+        // ----- CATEGORY -----
 
 ipcMain.handle('createCategory', async (event, obj) => {
     result = await validateCategory(obj);
@@ -97,25 +106,37 @@ ipcMain.handle('createCategory', async (event, obj) => {
 
 ipcMain.handle('getAllCategories', async (event, userId) => {
     result = await getCategories(userId);
-    return {'getAllCategories': result};
+    return { 'getAllCategories': result };
 });
+
+// ----- PRODUCT -----
 
 ipcMain.handle('getAllProducts', async (event, categoryName) => {
     result = await getProducts(categoryName);
-    return {'getAllProducts': result};
+    return { 'getAllProducts': result };
 });
 
 ipcMain.handle('createProduct', async (event, obj) => {
     categoryId = await getCategoryId(obj);
-    console.log(categoryId);
-    result = await createProduct(obj,categoryId);
-    return {'createProduct': result};
+    result = await validateProduct(obj, categoryId);
+    console.log(result);
+    if (!result) {
+        return {'createProduct' : false};
+    }
+    resultFinal = await createProduct(obj, categoryId);
+    return { 'createProduct': true};
 });
 
+ipcMain.handle('getProduct', async(event, productId) => {
+    result = await getProduct(productId);
+    return {'getProduct': result};
+})
+
+// --------------------------------------------
 // ----------------- FUNCTIONS ----------------
+// --------------------------------------------
 
-
-// ----- LOGIN -----
+        // ----- LOGIN -----
 
 function validateLogin(obj) {
 
@@ -132,7 +153,7 @@ function validateLogin(obj) {
     // db.close();
 }
 
-// ----- REGISTER -----
+        // ----- REGISTER -----
 
 function validateRegister(obj) {
     try {
@@ -168,16 +189,17 @@ function createUser(obj) {
     db.run(`insert into users(name,email,password) values(?,?,?)`, [obj.userName, obj.email, obj.password]);
 }
 
-// ----- CATEGORY -----
+        // ----- CATEGORY -----
 
 function validateCategory(obj) {
-    const categoryName = obj.categoryName;
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM categories where name = ? && user_id = ?", [categoryName, obj.userId], (err, rows) => {
+        db.all("SELECT * FROM categories where name = ? and user_id = ?", [obj.categoryName, obj.userId], (err, rows) => {
+            console.log(rows.length);
             if (rows.length == 0) {
                 return resolve(true)
             }
             return resolve(false);
+
         });
     })
 }
@@ -199,11 +221,11 @@ function getCategories(userId) {
 }
 
 
-// ----- PRODUCT -----
+        // ----- PRODUCT -----
 
 function getProducts(params) {
     return new Promise((resolve, reject) => {
-        db.all("SELECT products.name FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
+        db.all("SELECT products.name, products.id FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
             let products = [];
             rows.forEach(function (row) {
                 products.push(row);
@@ -221,6 +243,27 @@ function getCategoryId(params) {
     })
 }
 
+function validateProduct(obj, categoryId) {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM products where category_id = ? and name = ?", [categoryId, obj.productName], (err, rows) => {
+            if (rows.length == 0) {
+                return resolve(true);
+            }
+            return resolve(false);
+        });
+    })
+}
+
 function createProduct(obj, categoryId) {
     db.run(`insert into products(name,category_id,image,web_url,stock,description,stock_min) values(?,?,?,?,?,?,?)`, [obj.productName, categoryId, obj.productImg, obj.productUrl, obj.cantidad, obj.description, obj.cantidadMin]);
+}
+
+function getProduct(params) {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, categories.name as category_name FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
+            console.log(row);
+            
+            return resolve(row);
+        });
+    })
 }

@@ -1,8 +1,9 @@
 const createCategoryBTN = document.getElementById('createCategoryBTN');
 const message = document.getElementById('message');
-var query = location.search;
-var value = query.split('=');
-const userId = value[1];
+let params = new URLSearchParams(location.search);
+const userId = params.get('user');
+import { setClickEventOfMenu } from './common.js'; 
+
 
 createCategoryBTN.addEventListener('click', async (event) => {
     const categoryName = document.getElementById('categoryName');
@@ -12,6 +13,9 @@ createCategoryBTN.addEventListener('click', async (event) => {
         userId: userId,
     }
 
-    result = await window.category.createCategory(obj);
+    let result = await window.category.createCategory(obj);
     message.innerText = result.createCategory
 })
+
+setClickEventOfMenu(userId);
+

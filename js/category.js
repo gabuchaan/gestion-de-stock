@@ -1,13 +1,15 @@
 const list = document.getElementById('categoryList');
-var query = location.search;
-var value = query.split('=');
-const userId = value[1];
+const createCategoryBTN = document.getElementById('createCategoryBTN');
+let params = new URLSearchParams(location.search);
+const userId = params.get('user');
+import { setClickEventOfMenu, setClickEventCreateCategory } from "./common.js";
 
-async function showCategoryList(params) {
+
+async function showCategoryList() {
     
-    result = await window.category.getAllCategories(userId);
-    console.log(result.getAllCategories);
-    let html;
+    let result = await window.category.getAllCategories(userId);
+    console.log(result);
+    let html = "";
     result.getAllCategories.forEach(category => {
         html += `<a href="#" class="list-group-item list-group-item-action categoryListItem">${category.name}</a>`
     });
@@ -16,11 +18,11 @@ async function showCategoryList(params) {
     for (let index = 0; index < listBTN.length; index++) {
         listBTN[index].addEventListener('click', (e) => {
             // console.log( window.location.href);
-            window.location.href = './product.html?name=' +  encodeURIComponent(listBTN[index].textContent);
+            window.location.href = './product.html?category-name=' +  encodeURIComponent(listBTN[index].textContent)  + "&user=" + userId;
             // console.log(listBTN[index].textContent);
         });
     }
 }
-
-
+setClickEventOfMenu(userId);
+setClickEventCreateCategory(userId);
 showCategoryList();
