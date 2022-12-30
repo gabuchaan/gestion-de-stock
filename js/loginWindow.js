@@ -14,7 +14,7 @@ loginBtn.addEventListener('click', async (event) => {
     // if (!result.login) {
     //     message.innerText = "Login incorrect";
     // }
-    result = await window.tryLogin.login(obj);
+    result = await window.auth.login(obj);
     if (!result.login) {
         message.innerText = "Login incorrect";
     }

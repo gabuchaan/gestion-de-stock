@@ -37,8 +37,8 @@
                 <h2 class="mt-5">MENU</h2>
                 <div class="d-grid gap-2">
                     <button id="categoryBTN" class="btn btn-primary mt-4" type="button">Category</button>
-                    <button id="editProfileBTN" class="btn btn-primary mt-4" type="button">Ver datos</button>
-                    <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                    <button class="btn btn-primary mt-4" type="button">Ver datos</button>
+                    <button id="editProfileBTN" class="btn btn-primary mt-4" type="button">Editar perfil</button>
                     <button class="btn btn-primary mt-4" type="button">Favoritos</button>
                     <button id="logoutBTN" class="btn btn-primary mt-5" type="button">Logout</button>
                 </div>
@@ -55,14 +55,13 @@
 
                 <div class="row justify-content-center p-2">
                     <div class="col-3 bg-light text-center">
-                        <img src="../Img/sushi.png"
-                            class="img-fluid rounded-start" alt="...">
+                        <img src="../Img/sushi.png" class="img-fluid rounded-start" alt="...">
                         <p></p>
                         <button type="button" class="btn btn-primary" id="editProductBTN">Modificar Product</a>
                     </div>
 
                     <div class="col-9 text-center">
-                        <div class="list-group" id="productList">
+                        <!-- <div class="list-group" id="productList">
                             <div class="list-group-item list-group-item-action">
                                 <div class="row align-items-start">
                                     <div class="col">
@@ -102,13 +101,45 @@
                                         hola
                                     </div>
                                 </div>
+                            </div> -->
+                        <!-- </div> -->
+                        <!-- <br>
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 100px" id="descriptionValue" disabled></textarea>
+                            <label for="floatingTextarea2">Descrpcion</label>
+                        </div> -->
+                        <form>
+                            <div class="mb-3">
+                                <label for="inputName" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="inputName">
                             </div>
-                        </div>
-                        <br>
-                        <div class="mb-3">
-                            <label for="textareaDescription" class="form-label">Descripcion</label>
-                            <textarea class="form-control" id="textareaDescription" rows="3" disabled></textarea>
-                        </div>
+                            <div class="mb-3">
+                                <label for="inputUrl" class="form-label">URL</label>
+                                <input type="url" class="form-control" id="inputUrl">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputStock" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="inputStock">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputMinStock" class="form-label">Stock Minimo</label>
+                                <input type="number" class="form-control" id="inputMinStock">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ddlViewBy" class="form-label">Categoria</label>
+                                <select id="ddlViewBy" class="form-select form-control" aria-label="Default select example">
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="textareaDescription" class="form-label">Descripcion</label>
+                                <textarea class="form-control" id="textareaDescription" rows="3"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="editBTN">Cambiar</button>
+                        </form>
                     </div>
                 </div>
 
@@ -118,7 +149,7 @@
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="../js/productDetail.js"></script>
+    <script type="module" src="../js/editProduct.js"></script>
 </body>
 
 </html>

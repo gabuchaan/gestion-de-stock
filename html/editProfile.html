@@ -36,9 +36,9 @@
             <div class="d-grid gap-2">
                 <button id="categoryBTN" class="btn btn-primary mt-4" type="button">Category</button>
                 <button class="btn btn-primary mt-4" type="button">Ver datos</button>
-                <button class="btn btn-primary mt-4" type="button">Editar perfil</button>
+                <button id="editProfileBTN" class="btn btn-primary mt-4" type="button">Editar perfil</button>
                 <button class="btn btn-primary mt-4" type="button">Favoritos</button>
-                <button class="btn btn-primary mt-5" type="button">Logout</button>
+                <button id="logoutBTN" class="btn btn-primary mt-5" type="button">Logout</button>
             </div>
         </div>
 
@@ -47,23 +47,37 @@
             <br>
             <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
             <br>
-            <h2>Create category</h2>
+            <h2>Profile</h2>
             <br>
-            <form>
-                <div class="mb-3">
-                    <label for="categoryName" class="form-label">Category name</label>
-                    <input type="text" class="form-control" id="categoryName">
+            <div class="row justify-content-center p-2">
+                <div class="col-3 bg-light text-center">
+                    <img src="../Img/sushi.png" class="img-fluid rounded-start" alt="...">
+                    <p></p>
+                    <button type="button" class="btn btn-primary" id="editProductBTN">Modificar imagen</a>
                 </div>
-                <button type="button" class="btn btn-primary" id="createCategoryBTN">Create</button>
-                <!-- <button type="button" class="btn btn-primary">Cancel</button> -->
-                <p id="message"></p>
-            </form>
+
+                <div class="col-9 text-center">
+                    <form>
+                        <div class="mb-3">
+                            <label for="inputName" class="form-label">User Name</label>
+                            <input type="text" class="form-control" id="inputName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="inputEmail">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="editBTN">Cambiar</button>
+                        <p></p>
+                        <button type="button" class="btn btn-primary" id="editPassBTN">Cambiar Password</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
-<script type="module" src="../js/createCategory.js"></script>
+<script type="module" src="../js/editProfile.js"></script>
 </body>
 
 </html>

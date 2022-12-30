@@ -12,7 +12,7 @@ async function showProductsList(categoryName) {
     console.log(result);
     let html;
     result.getAllProducts.forEach(product => {
-        html += `<a href="../html/productDetail.html?user=${userId}&product-name=${product.name}&product-id=${product.id}" class="list-group-item list-group-item-action">${product.name}</a>`
+        html += `<a href="../html/productDetail.html?user=${userId}&product-id=${product.id}" class="list-group-item list-group-item-action">${product.name}</a>`
     });
     list.innerHTML = html;
 }

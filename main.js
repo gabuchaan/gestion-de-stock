@@ -1,5 +1,6 @@
 
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { resolve } = require('path');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./test.db');
@@ -72,7 +73,7 @@ app.on('window-all-closed', () => {
 // ----------------- IPC ------------------
 // ----------------------------------------
 
-        // ----- LOGIN -----
+// ----- LOGIN -----
 
 ipcMain.handle('login', async (event, obj) => {
     let result = await validateLogin(obj);
@@ -87,12 +88,28 @@ ipcMain.handle('login', async (event, obj) => {
 ipcMain.handle('register', async (event, obj) => {
     let result = await validateRegister(obj);
     if (result === "ok") {
-        await createUser(obj);
+        createUser(obj);
     }
     return { 'register': result };
 });
 
-        // ----- CATEGORY -----
+// ----- USER -----
+
+ipcMain.handle('getProfile', async (event, userId) => {
+    let result = await getProfile(userId);
+    return { 'getProfile': result };
+})
+
+ipcMain.handle('editProfile', async (event, obj) => {
+    editProfile(obj);
+})
+
+ipcMain.handle('changePass', async (event, obj) => {
+    
+    changePass(obj);
+})
+
+// ----- CATEGORY -----
 
 ipcMain.handle('createCategory', async (event, obj) => {
     result = await validateCategory(obj);
@@ -101,7 +118,6 @@ ipcMain.handle('createCategory', async (event, obj) => {
     }
     createCategory(obj);
     return { 'createCategory': "Se ha creado correctamente la categoria." }
-
 });
 
 ipcMain.handle('getAllCategories', async (event, userId) => {
@@ -119,24 +135,38 @@ ipcMain.handle('getAllProducts', async (event, categoryName) => {
 ipcMain.handle('createProduct', async (event, obj) => {
     categoryId = await getCategoryId(obj);
     result = await validateProduct(obj, categoryId);
-    console.log(result);
     if (!result) {
-        return {'createProduct' : false};
+        return { 'createProduct': false };
     }
     resultFinal = await createProduct(obj, categoryId);
-    return { 'createProduct': true};
+    return { 'createProduct': true };
 });
 
-ipcMain.handle('getProduct', async(event, productId) => {
+ipcMain.handle('getProduct', async (event, productId) => {
     result = await getProduct(productId);
-    return {'getProduct': result};
+    return { 'getProduct': result };
 })
+
+ipcMain.handle('updateProduct', async (event, obj) => {
+    const categoryId = await getCategoryId(obj);
+    const product = await getProduct(obj.productId);
+
+    if (obj.productCategory != product.category_name) {
+        result = await validateProduct(obj, categoryId);
+        if (!result) {
+            return { 'updateProduct': false };
+        }
+    }
+    await updateProduct(obj, categoryId);
+    return { 'updateProduct': true };
+})
+
 
 // --------------------------------------------
 // ----------------- FUNCTIONS ----------------
 // --------------------------------------------
 
-        // ----- LOGIN -----
+// ----- LOGIN -----
 
 function validateLogin(obj) {
 
@@ -153,7 +183,7 @@ function validateLogin(obj) {
     // db.close();
 }
 
-        // ----- REGISTER -----
+// ----- REGISTER -----
 
 function validateRegister(obj) {
     try {
@@ -185,11 +215,38 @@ function validateRegister(obj) {
     }
 }
 
+// ----- USER -----
+
+function getProfile(userId) {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT * from users where id = ?", [userId], (err, row) => {
+            return resolve(row);
+        });
+    })
+}
+
 function createUser(obj) {
     db.run(`insert into users(name,email,password) values(?,?,?)`, [obj.userName, obj.email, obj.password]);
 }
 
-        // ----- CATEGORY -----
+function editProfile(obj) {
+    let data = [obj.name, obj.email, obj.id];
+    let sql = `UPDATE users
+                SET name=?, email=?
+                WHERE id=?`;
+    db.run(sql, data);
+}
+
+function changePass(obj) {
+    console.log(obj);
+    let data = [obj.newPassword, obj.id];
+    let sql = `UPDATE users
+                SET password=?
+                WHERE id=?`;
+    db.run(sql, data);
+}
+
+// ----- CATEGORY -----
 
 function validateCategory(obj) {
     return new Promise((resolve, reject) => {
@@ -220,8 +277,15 @@ function getCategories(userId) {
     });
 }
 
+function getCategoryId(params) {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT * FROM categories where name = ?", [params.productCategory], (err, rows) => {
+            return resolve(rows.id);
+        });
+    })
+}
 
-        // ----- PRODUCT -----
+// ----- PRODUCT -----
 
 function getProducts(params) {
     return new Promise((resolve, reject) => {
@@ -231,14 +295,6 @@ function getProducts(params) {
                 products.push(row);
             });
             return resolve(products);
-        });
-    })
-}
-
-function getCategoryId(params) {
-    return new Promise((resolve, reject) => {
-        db.get("SELECT * FROM categories where name = ?", [params.productCategory], (err, rows) => {
-            return resolve(rows.id);
         });
     })
 }
@@ -261,9 +317,17 @@ function createProduct(obj, categoryId) {
 function getProduct(params) {
     return new Promise((resolve, reject) => {
         db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, categories.name as category_name FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
-            console.log(row);
-            
+            // console.log(row);
+
             return resolve(row);
         });
     })
+}
+
+function updateProduct(obj, categoryId) {
+    let data = [obj.productName, categoryId, obj.web_url, obj.stock, obj.stock_min, obj.description, obj.productId];
+    let sql = `UPDATE products
+                SET name=?, category_id=?, web_url=?, stock=?, stock_min=?, description=?
+                WHERE id=?`;
+    db.run(sql, data);
 }
