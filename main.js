@@ -125,6 +125,12 @@ ipcMain.handle('getAllCategories', async (event, userId) => {
     return { 'getAllCategories': result };
 });
 
+ipcMain.handle('deleteCategory', async (event, obj) => {
+    let categoryId = await getCategoryId(obj);
+    await deleteProducts(categoryId);
+    await deleteCategory(categoryId);
+})
+
 // ----- PRODUCT -----
 
 ipcMain.handle('getAllProducts', async (event, categoryName) => {
@@ -161,6 +167,9 @@ ipcMain.handle('updateProduct', async (event, obj) => {
     return { 'updateProduct': true };
 })
 
+ipcMain.handle('deleteProduct', async (event, productId) => {
+    deleteProduct(productId);
+})
 
 // --------------------------------------------
 // ----------------- FUNCTIONS ----------------
@@ -279,10 +288,16 @@ function getCategories(userId) {
 
 function getCategoryId(params) {
     return new Promise((resolve, reject) => {
-        db.get("SELECT * FROM categories where name = ?", [params.productCategory], (err, rows) => {
+        db.get("SELECT * FROM categories where name = ? and user_id = ?", [params.productCategory, params.userId], (err, rows) => {
             return resolve(rows.id);
         });
     })
+}
+
+function deleteCategory(categoryId) {
+    let data = [categoryId];
+    let sql = "DELETE FROM categories WHERE id=(?)";
+    db.run(sql, data);
 }
 
 // ----- PRODUCT -----
@@ -329,5 +344,17 @@ function updateProduct(obj, categoryId) {
     let sql = `UPDATE products
                 SET name=?, category_id=?, web_url=?, stock=?, stock_min=?, description=?
                 WHERE id=?`;
+    db.run(sql, data);
+}
+
+function deleteProduct(productId) {
+    let data = [productId];
+    let sql = "DELETE FROM products WHERE id=(?)";
+    db.run(sql, data);
+}
+
+function deleteProducts(categoryId) {
+    let data = [categoryId];
+    let sql = "DELETE FROM products WHERE category_id=(?)";
     db.run(sql, data);
 }

@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('tryRegister', {
 contextBridge.exposeInMainWorld('category', {
     createCategory: (obj) => ipcRenderer.invoke("createCategory", obj),
     getAllCategories: (userId) => ipcRenderer.invoke("getAllCategories", userId),
+    deleteCategory: (obj) => ipcRenderer.invoke("deleteCategory", obj),
 })
 
 contextBridge.exposeInMainWorld('product', {
@@ -22,6 +23,7 @@ contextBridge.exposeInMainWorld('product', {
     getAllProducts: (obj) => ipcRenderer.invoke('getAllProducts', obj),
     getProduct: (productId) => ipcRenderer.invoke('getProduct', productId),
     updateProduct: (obj) => ipcRenderer.invoke("updateProduct", obj),
+    deleteProduct: (productId) => ipcRenderer.invoke('deleteProduct', productId),
 })
 
 

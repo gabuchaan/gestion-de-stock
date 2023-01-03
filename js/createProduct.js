@@ -15,6 +15,7 @@ createProductBTN.addEventListener('click', async (event) => {
     const productCategory = document.getElementById('ddlViewBy');
 
     const obj = {
+        userId: userId,
         productName: productName.value,
         productUrl: productUrl.value,
         cantidad: cantidad.value,

@@ -43,6 +43,7 @@ async function setCategories(userId, categoryName) {
 
 editBTN.addEventListener('click', async(e) => {
     const obj = {
+        userId: userId,
         productId: productId,
         productName: inputName.value,
         web_url: inputUrl.value,
