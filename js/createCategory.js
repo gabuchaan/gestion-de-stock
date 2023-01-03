@@ -1,8 +1,9 @@
+import { setClickEventOfMenu } from './common.js'; 
+
 const createCategoryBTN = document.getElementById('createCategoryBTN');
 const message = document.getElementById('message');
 let params = new URLSearchParams(location.search);
 const userId = params.get('user');
-import { setClickEventOfMenu } from './common.js'; 
 
 
 createCategoryBTN.addEventListener('click', async (event) => {

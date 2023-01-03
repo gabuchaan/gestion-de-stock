@@ -105,7 +105,7 @@ ipcMain.handle('editProfile', async (event, obj) => {
 })
 
 ipcMain.handle('changePass', async (event, obj) => {
-    
+
     changePass(obj);
 })
 
@@ -169,6 +169,12 @@ ipcMain.handle('updateProduct', async (event, obj) => {
 
 ipcMain.handle('deleteProduct', async (event, productId) => {
     deleteProduct(productId);
+})
+
+ipcMain.handle('getSearchedProducts', async (event, obj) => {
+    console.log(obj);
+    const result = await getSearchedProducts(obj);
+    return {'getSearchedProducts': result};
 })
 
 // --------------------------------------------
@@ -357,4 +363,18 @@ function deleteProducts(categoryId) {
     let data = [categoryId];
     let sql = "DELETE FROM products WHERE category_id=(?)";
     db.run(sql, data);
+}
+
+function getSearchedProducts(obj) {
+    return new Promise((resolve, reject) => {
+        console.log('hola');
+        db.all("SELECT products.name as name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id WHERE user_id = ? AND products.name LIKE ?", [ obj.userId, '%' + obj.word + '%'], (err, rows) => {
+            let products = [];
+            rows.forEach(function (row) {
+                console.log(row);
+                products.push(row);
+            });
+            return resolve(products);
+        });
+    });
 }

@@ -13,8 +13,6 @@ const descriptionValue = document.getElementById('textareaDescription');
 const editProductBTN = document.getElementById('editProductBTN');
 const deleteProductBTN = document.getElementById('deleteProductBTN');
 
-console.log(window.location.search);
-
 async function setProductValues() {
     const result = await window.product.getProduct(productId);
     productTitle.innerText = result.getProduct.name;

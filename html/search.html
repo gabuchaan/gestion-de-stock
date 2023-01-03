@@ -37,10 +37,10 @@
                 <h2 class="mt-5">MENU</h2>
                 <div class="d-grid gap-2">
                     <button id="categoryBTN" class="btn btn-primary mt-4" type="button">Category</button>
-                    <button id="#" class="btn btn-primary mt-4" type="button">Ver datos</button>
+                    <button class="btn btn-primary mt-4" type="button">Ver datos</button>
                     <button id="editProfileBTN" class="btn btn-primary mt-4" type="button">Editar perfil</button>
                     <button class="btn btn-primary mt-4" type="button" id="searchBTN">Buscar</button>
-                    <button class="btn btn-primary mt-5" type="button" id="logoutBTN">Logout</button>
+                    <button id="logoutBTN" class="btn btn-primary mt-5" type="button">Logout</button>
                 </div>
             </div>
 
@@ -50,19 +50,33 @@
                 <a href="../html/main.html"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></a>
                 <br>
                 <!-- Categories -->
-                <h2 class="mt-4">Category</h2>
+                <h2 class="mt-4">Products</h2>
                 <br>
-                <div class="list-group" id="categoryList">
-
+                <div class="card-body row no-gutters align-items-center col-12">
+                    <!--end of col-->
+                    <div class="col">
+                        <input id="searchWord" class="form-control form-control-lg form-control-borderless" type="search"
+                            placeholder="Search topics or keywords">
+                    </div>
+                    <!--end of col-->
+                    <div class="col-auto">
+                        <button class="btn btn-lg btn-success" type="button" id="searchProductBTN" disabled>Search</button>
+                    </div>
+                    <!--end of col-->
                 </div>
                 <br>
-                <button type="button" class="btn btn-primary" id="createCategoryBTN">Create Category</button>
+                <div class="list-group" id="productList">
+
+                    <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="../js/category.js"></script>
+    <script type="module" src="../js/search.js"></script>
 </body>
 
 </html>

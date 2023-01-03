@@ -1,9 +1,10 @@
+import { setClickEventOfMenu } from './common.js';
+
 const createProductBTN = document.getElementById('createProductBTN');
 const message = document.getElementById('message');
 const productCategory = document.getElementById('ddlViewBy');
 let params = new URLSearchParams(location.search);
 const userId = params.get('user');
-import { setClickEventOfMenu } from './common.js'; 
 
 createProductBTN.addEventListener('click', async (event) => {
     const productName = document.getElementById('productName');

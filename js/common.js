@@ -1,14 +1,16 @@
-function test(params) {
-    console.log(params);
-}
 
 function setClickEventOfMenu(userId) {
     categoryBTN.addEventListener('click', (e) => {
+        console.log('hola');
         window.location.href = '../html/category.html?user=' +  userId;
     });
 
     editProfileBTN.addEventListener('click', () => {
         window.location.href = '../html/editProfile.html?user=' + userId;
+    })
+
+    searchBTN.addEventListener('click', () => {
+        window.location.href = `../html/search.html?user=${userId}`;
     })
 
     logoutBTN.addEventListener('click', () => {
@@ -34,4 +36,4 @@ function setClickEventEditProduct(userId,productId) {
     });
 }
 
-export {test, setClickEventOfMenu, setClickEventCreateCategory, setClickEventCreateProduct, setClickEventEditProduct};
+export { setClickEventOfMenu, setClickEventCreateCategory, setClickEventCreateProduct, setClickEventEditProduct};
