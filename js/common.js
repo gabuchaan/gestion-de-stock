@@ -16,6 +16,10 @@ function setClickEventOfMenu(userId) {
     logoutBTN.addEventListener('click', () => {
         window.location.href = '../index.html';
     })
+
+    minProductBTN.addEventListener('click', () => {
+        window.location.href = '../html/minProduct.html?user=' + userId;
+    })
 }
 
 function setClickEventCreateCategory(userId) {

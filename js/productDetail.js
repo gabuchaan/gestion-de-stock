@@ -12,6 +12,7 @@ const categoryValue = document.getElementById('categoryValue');
 const descriptionValue = document.getElementById('textareaDescription');
 const editProductBTN = document.getElementById('editProductBTN');
 const deleteProductBTN = document.getElementById('deleteProductBTN');
+const showWebBTN = document.getElementById('showWebBTN');
 
 async function setProductValues() {
     const result = await window.product.getProduct(productId);
@@ -21,11 +22,17 @@ async function setProductValues() {
     minQuantityValue.innerText = result.getProduct.stock_min;
     categoryValue.innerText = result.getProduct.category_name;
     descriptionValue.innerText = result.getProduct.description;
+
+    if(result.getProduct.web_url == null){
+        showWebBTN.setAttribute('disabled', "");
+    }else{
+        showWebBTN.setAttribute('href', result.getProduct.web_url);
+    }
+    
 }
 
 deleteProductBTN.addEventListener('click', () => {
-    let confirm = window.open(`../html/productDelete.html?user=${userId}&product-id=${productId}&category-name=${categoryName}`, "Confirm", "width=400,height=300");
-    
+    window.open(`../html/productDelete.html?user=${userId}&product-id=${productId}&category-name=${categoryName}`, "Confirm", "width=400,height=300");
 })
 setProductValues();
 setClickEventEditProduct(userId, productId);

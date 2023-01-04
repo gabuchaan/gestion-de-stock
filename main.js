@@ -1,5 +1,5 @@
 
-const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, shell } = require('electron');
 const { resolve } = require('path');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
@@ -33,6 +33,15 @@ const createLoginWindow = () => {
         }
     });
 
+
+    const handleUrlOpen = (e, url) => {
+        // console.log(url);
+        if (url.match(/^http/)) {
+            e.preventDefault();
+            shell.openExternal(url);
+        }
+    }
+    loginWindow.webContents.on('will-navigate', handleUrlOpen);
     loginWindow.webContents.openDevTools();
     loginWindow.loadFile('index.html');
 }
@@ -133,9 +142,9 @@ ipcMain.handle('deleteCategory', async (event, obj) => {
 
 // ----- PRODUCT -----
 
-ipcMain.handle('getAllProducts', async (event, categoryName) => {
+ipcMain.handle('getAllProductsOfCategory', async (event, categoryName) => {
     result = await getProducts(categoryName);
-    return { 'getAllProducts': result };
+    return { 'getAllProductsOfCategory': result };
 });
 
 ipcMain.handle('createProduct', async (event, obj) => {
@@ -172,9 +181,14 @@ ipcMain.handle('deleteProduct', async (event, productId) => {
 })
 
 ipcMain.handle('getSearchedProducts', async (event, obj) => {
-    console.log(obj);
     const result = await getSearchedProducts(obj);
-    return {'getSearchedProducts': result};
+    return { 'getSearchedProducts': result };
+})
+
+ipcMain.handle('getAllProducts', async(event, userId) => {
+    console.log(userId);
+    let products = await getAllProducts(userId);
+    return { 'getAllProducts': products};
 })
 
 // --------------------------------------------
@@ -368,7 +382,7 @@ function deleteProducts(categoryId) {
 function getSearchedProducts(obj) {
     return new Promise((resolve, reject) => {
         console.log('hola');
-        db.all("SELECT products.name as name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id WHERE user_id = ? AND products.name LIKE ?", [ obj.userId, '%' + obj.word + '%'], (err, rows) => {
+        db.all("SELECT products.name as name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id WHERE user_id = ? AND products.name LIKE ?", [obj.userId, '%' + obj.word + '%'], (err, rows) => {
             let products = [];
             rows.forEach(function (row) {
                 console.log(row);
@@ -377,4 +391,16 @@ function getSearchedProducts(obj) {
             return resolve(products);
         });
     });
+}
+
+function getAllProducts(userId) {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT products.name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id where categories.user_id = ?", [userId], (err, rows) => {
+            let products = [];
+            rows.forEach(function (row) {
+                products.push(row);
+            });
+            return resolve(products);
+        });
+    })
 }

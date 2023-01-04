@@ -17,7 +17,6 @@ searchWord.addEventListener('input', () => {
 
 searchProductBTN.addEventListener('click', async () => {
     let word = searchWord.value;
-    console.log(word);
     const obj = {
         word: word,
         userId: userId,
@@ -29,7 +28,6 @@ searchProductBTN.addEventListener('click', async () => {
         html += `<a href="../html/productDetail.html?user=${userId}&category-name=${product.categoryName}&product-id=${product.id}" class="list-group-item list-group-item-action">${product.name}</a>`
     });
     list.innerHTML = html;
-    console.log(result);
 })
 
 
