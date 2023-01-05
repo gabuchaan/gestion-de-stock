@@ -47,13 +47,15 @@
             <!-- ----- Main Contents ----- -->
             <div class="col-8 text-center">
                 <br>
+                <div id="homeBTN"><img src="../Img/25694.png" alt="homeBtn" width="30" height="30"></div>
+                <br>
                 <!-- Choice Category -->
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Categories
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" id="ddMenu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -63,26 +65,19 @@
                 <!-- Products -->
                 <h2 class="mt-4">Category name</h2>
                 <br>
-                <table class="table">
-                    <tbody>
-                        <tr class="table-primary">
-                            <td class="text-lg-start">Mark</td>
-                            <td class="text-lg-end">Otto</td>
-                        </tr>
-                        <tr class="table-primary">
-                            <td class="text-lg-start">Mark</td>
-                            <td class="text-lg-end">Otto</td>
-                        </tr>
-                        <tr class="table-primary">
-                            <td class="text-lg-start">Mark</td>
-                            <td class="text-lg-end">Otto</td>
-                        </tr>
-                        <tr class="table-primary">
-                            <td class="text-lg-start">Mark</td>
-                            <td class="text-lg-end">Otto</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="list-group" id="productList">
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="row justify-content-between">
+                            <div class="col-4">
+                                One of two columns
+                            </div>
+                            <div class="col-4 text-danger">
+                                One of two columns
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

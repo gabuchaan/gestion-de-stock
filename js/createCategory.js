@@ -1,10 +1,8 @@
-import { setClickEventOfMenu } from './common.js'; 
+import { setClickEventOfMenu, checkIfNotEmpty } from './common.js'; 
 
 const createCategoryBTN = document.getElementById('createCategoryBTN');
-const message = document.getElementById('message');
 let params = new URLSearchParams(location.search);
 const userId = params.get('user');
-
 
 createCategoryBTN.addEventListener('click', async (event) => {
     const categoryName = document.getElementById('categoryName');
@@ -14,8 +12,19 @@ createCategoryBTN.addEventListener('click', async (event) => {
         userId: userId,
     }
 
+    if (!checkIfNotEmpty(obj.categoryName)) {
+        alert("El nombre de categoria es obligatorio.");
+        return;
+    }
+
     let result = await window.category.createCategory(obj);
-    message.innerText = result.createCategory
+
+    console.log(result);
+    if(result == true){
+        window.location.href = '../html/category.html?user=' +  userId;
+    }else{
+        alert("La categoria ya existe.");
+    }
 })
 
 setClickEventOfMenu(userId);

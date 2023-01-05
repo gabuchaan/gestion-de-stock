@@ -123,10 +123,12 @@ ipcMain.handle('changePass', async (event, obj) => {
 ipcMain.handle('createCategory', async (event, obj) => {
     result = await validateCategory(obj);
     if (!result) {
-        return { 'createCategory': "La categoria ya existe." }
+        // return { 'createCategory': "La categoria ya existe." }
+        return { 'createCategory': false }
     }
     createCategory(obj);
-    return { 'createCategory': "Se ha creado correctamente la categoria." }
+    // return { 'createCategory': "Se ha creado correctamente la categoria." }
+    return { 'createCategory': true }
 });
 
 ipcMain.handle('getAllCategories', async (event, userId) => {
@@ -142,8 +144,8 @@ ipcMain.handle('deleteCategory', async (event, obj) => {
 
 // ----- PRODUCT -----
 
-ipcMain.handle('getAllProductsOfCategory', async (event, categoryName) => {
-    result = await getProducts(categoryName);
+ipcMain.handle('getAllProductsOfCategory', async (event, obj) => {
+    result = await getProducts(obj);
     return { 'getAllProductsOfCategory': result };
 });
 
@@ -185,10 +187,9 @@ ipcMain.handle('getSearchedProducts', async (event, obj) => {
     return { 'getSearchedProducts': result };
 })
 
-ipcMain.handle('getAllProducts', async(event, userId) => {
-    console.log(userId);
+ipcMain.handle('getAllProducts', async (event, userId) => {
     let products = await getAllProducts(userId);
-    return { 'getAllProducts': products};
+    return { 'getAllProducts': products };
 })
 
 // --------------------------------------------
@@ -322,9 +323,9 @@ function deleteCategory(categoryId) {
 
 // ----- PRODUCT -----
 
-function getProducts(params) {
+function getProducts(obj) {
     return new Promise((resolve, reject) => {
-        db.all("SELECT products.name, products.id FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ?", [params], (err, rows) => {
+        db.all("SELECT products.name, products.id, products.stock, products.stock_min FROM products INNER JOIN categories on categories.id = products.category_id where categories.name = ? AND categories.user_id = ?", [obj.categoryName, obj.userId], (err, rows) => {
             let products = [];
             rows.forEach(function (row) {
                 products.push(row);

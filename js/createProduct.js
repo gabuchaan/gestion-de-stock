@@ -1,4 +1,4 @@
-import { setClickEventOfMenu } from './common.js';
+import { setClickEventOfMenu, checkIfNotEmpty, isValidHttpUrl } from './common.js';
 
 const createProductBTN = document.getElementById('createProductBTN');
 const message = document.getElementById('message');
@@ -26,10 +26,31 @@ createProductBTN.addEventListener('click', async (event) => {
         productCategory: productCategory.options[productCategory.selectedIndex].text,
     }
 
+    if (!checkIfNotEmpty(obj.productName)) {
+        alert("El nombre de producto es obligatorio.");
+        return;
+    }
+    if (!checkIfNotEmpty(obj.cantidad)) {
+        obj.cantidad = 0;
+    }
+    if (!checkIfNotEmpty(obj.cantidadMin)) {
+        obj.cantidadMin = 0;
+    }
+
+    if(checkIfNotEmpty(obj.productUrl)){
+        if(!isValidHttpUrl(obj.productUrl)){
+            alert('El formato de URL es incorrecto.');
+            return;
+        }
+    }
+
     let result = await window.product.createProduct(obj);
-    console.log(result);
+
     if (!result.createProduct) {
-        message.innerText = "El producto ya exsiste";
+        alert("El producto ya exsiste");
+        // message.innerText = "El producto ya exsiste";
+    }else{
+        window.location.href = `./product.html?category-name=${obj.productCategory}&user=${userId}`;
     }
 });
 

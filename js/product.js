@@ -9,10 +9,18 @@ const deleteCategoryBTN = document.getElementById('deleteCategoryBTN');
 
 
 async function showProductsList(categoryName) {
-    let result = await window.product.getAllProductsOfCategory(categoryName);
+    const obj = {
+        userId: userId,
+        categoryName: categoryName
+    }
+    let result = await window.product.getAllProductsOfCategory(obj);
     let html;
     result.getAllProductsOfCategory.forEach(product => {
-        html += `<a href="../html/productDetail.html?user=${userId}&category-name=${categoryName}&product-id=${product.id}" class="list-group-item list-group-item-action">${product.name}</a>`
+        if (product.stock < product.stock_min) {
+            html += `<a href="../html/productDetail.html?user=${userId}&category-name=${categoryName}&product-id=${product.id}" class="list-group-item list-group-item-action"><div class="row justify-content-between"><div class="col-4">${product.name}</div><div class="col-4 text-danger">${product.stock}</div></div></a>`;
+        }else{
+            html += `<a href="../html/productDetail.html?user=${userId}&category-name=${categoryName}&product-id=${product.id}" class="list-group-item list-group-item-action"><div class="row justify-content-between"><div class="col-4">${product.name}</div><div class="col-4">${product.stock}</div></div></a>`;
+        }
     });
     list.innerHTML = html;
 }

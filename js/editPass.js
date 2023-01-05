@@ -19,8 +19,6 @@ editPassBTN.addEventListener('click', async () => {
 
     let userData = await window.auth.getProfile(userId);
 
-    console.log(userData);
-    console.log(obj);
 
     if (userData.getProfile.password != obj.password) {
         alert('Password incorrect');
