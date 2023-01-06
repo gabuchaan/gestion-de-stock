@@ -192,6 +192,10 @@ ipcMain.handle('getAllProducts', async (event, userId) => {
     return { 'getAllProducts': products };
 })
 
+ipcMain.handle('changeFavorite', async (event, productId) => {
+    await changeFavorite(productId);
+})
+
 // --------------------------------------------
 // ----------------- FUNCTIONS ----------------
 // --------------------------------------------
@@ -352,7 +356,7 @@ function createProduct(obj, categoryId) {
 
 function getProduct(params) {
     return new Promise((resolve, reject) => {
-        db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, categories.name as category_name FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
+        db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, categories.name as category_name, products.favorite FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
             // console.log(row);
 
             return resolve(row);
@@ -396,7 +400,7 @@ function getSearchedProducts(obj) {
 
 function getAllProducts(userId) {
     return new Promise((resolve, reject) => {
-        db.all("SELECT products.name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id where categories.user_id = ?", [userId], (err, rows) => {
+        db.all("SELECT products.name, products.id, products.stock, products.stock_min, categories.name as categoryName, products.favorite FROM products INNER JOIN categories on categories.id = products.category_id where categories.user_id = ?", [userId], (err, rows) => {
             let products = [];
             rows.forEach(function (row) {
                 products.push(row);
@@ -404,4 +408,22 @@ function getAllProducts(userId) {
             return resolve(products);
         });
     })
+}
+
+function changeFavorite(productId) {
+    db.get(`select * from products where id = ?`, productId, (err, row) => {
+        if (row.favorite == 0) {
+            let data = [1, productId];
+            let sql = `UPDATE products
+                                    SET favorite = ?
+                                    WHERE id=?`;
+            db.run(sql, data);
+        } else {
+            let data = [0, productId];
+            let sql = `UPDATE products
+                                    SET favorite = ?
+                                    WHERE id=?`;
+            db.run(sql, data);
+        }
+    });
 }

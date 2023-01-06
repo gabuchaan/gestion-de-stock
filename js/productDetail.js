@@ -13,6 +13,7 @@ const descriptionValue = document.getElementById('textareaDescription');
 const editProductBTN = document.getElementById('editProductBTN');
 const deleteProductBTN = document.getElementById('deleteProductBTN');
 const showWebBTN = document.getElementById('showWebBTN');
+const favoriteBTN = document.getElementById('favoriteBTN');
 
 async function setProductValues() {
     const result = await window.product.getProduct(productId);
@@ -23,6 +24,13 @@ async function setProductValues() {
     categoryValue.innerText = result.getProduct.category_name;
     descriptionValue.innerText = result.getProduct.description;
 
+    if(result.getProduct.favorite == 0){
+        favoriteBTN.innerHTML = '<img src="../Img/star_25.png" alt="homeBtn" width="30" height="30" id="favoriteIcon">'
+    }else{
+        
+        favoriteBTN.innerHTML = '<img src="../Img/star-icon.png" alt="homeBtn" width="30" height="30" id="favoriteIcon">'
+    }
+
     if(result.getProduct.web_url == null){
         showWebBTN.setAttribute('disabled', "");
     }else{
@@ -30,6 +38,11 @@ async function setProductValues() {
     }
     
 }
+
+favoriteBTN.addEventListener('click', async () => {
+    await window.product.changeFavorite(productId);
+    window.location.href = `../html/productDetail.html?user=${userId}&category-name=${categoryName}&product-id=${productId}`;
+})
 
 deleteProductBTN.addEventListener('click', () => {
     window.open(`../html/productDelete.html?user=${userId}&product-id=${productId}&category-name=${categoryName}`, "Confirm", "width=400,height=300");

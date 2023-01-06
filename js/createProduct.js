@@ -57,7 +57,6 @@ createProductBTN.addEventListener('click', async (event) => {
 async function setCategories(userId) {
     console.log(userId);
     let result = await window.category.getAllCategories(userId);
-    console.log(result);
     let html;
     let i = 1;
     result.getAllCategories.forEach(category => {
