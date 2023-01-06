@@ -19,8 +19,7 @@ createCategoryBTN.addEventListener('click', async (event) => {
 
     let result = await window.category.createCategory(obj);
 
-    console.log(result);
-    if(result == true){
+    if(result.createCategory == true){
         window.location.href = '../html/category.html?user=' +  userId;
     }else{
         alert("La categoria ya existe.");
