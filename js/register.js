@@ -2,16 +2,19 @@ import { checkIfNotEmpty, checkIfEmail } from './common.js';
 
 const registerBtn = document.getElementById('registerBtn');
 const message = document.getElementById('message');
-userName = document.getElementById('userNameInput');
-email = document.getElementById('emailInput');
-password = document.getElementById('passwordInput');
+const userName = document.getElementById('userNameInput');
+const email = document.getElementById('emailInput');
+const password = document.getElementById('passwordInput');
 
 registerBtn.addEventListener('click', async (event) => {
+    console.log('hola');
     const obj = {
         userName: userName.value,
         email: email.value,
         password: password.value
     }
+
+    console.log(checkIfNotEmpty(obj.userName));
 
     if (!checkIfNotEmpty(obj.userName)) {
         alert("El nombre es obligatorio.");
@@ -28,7 +31,7 @@ registerBtn.addEventListener('click', async (event) => {
     }
 
 
-    result = await window.tryRegister.register(obj);
+    let result = await window.tryRegister.register(obj);
     if (result.register === "ok") {
         const result = await window.tryRegister.login(obj);
         if (!result.login) {
