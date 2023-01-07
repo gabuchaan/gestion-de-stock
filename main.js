@@ -199,13 +199,21 @@ ipcMain.handle('changeFavorite', async (event, productId) => {
     await changeFavorite(productId);
 })
 
-
 ipcMain.handle('chooseImg', async () => {
     // console.log(__dirname);
     const file = await dialog.showOpenDialog({filters: [{name: 'Images', extensions: ['jpg', 'png', 'gif']}]});
     console.log(file);
     return {'chooseImg': file};
 
+})
+
+ipcMain.handle('changeProductImage', async (event, obj) => {
+    deleteActualImage(obj);
+    const imagePath = await saveImageFile(path.join(__dirname, `\\Img\\ProductImage\\${obj.userId}`), obj.filePath);
+    
+    await updateImage(obj, imagePath);
+    return 'ok';
+    
 })
 // --------------------------------------------
 // ----------------- FUNCTIONS ----------------
@@ -439,6 +447,8 @@ function changeFavorite(productId) {
     });
 }
 
+
+
 function saveImageFile(directoryPath, imagePath) {
     if (imagePath.length == 0) {
         return path.join(__dirname, `\\Img\\defaultProduct.jpg`);
@@ -454,4 +464,25 @@ function saveImageFile(directoryPath, imagePath) {
         if(e) throw e;
     });
     return filePath;
+}
+
+
+// ----- COMMON -----
+
+function deleteActualImage(obj) {
+    if (obj.actualImage == path.join(__dirname, `\\Img\\defaultProduct.jpg`)) {
+        return;
+    }
+    fs.unlink(obj.actualImage, function (e) {
+        if (e) throw e;
+    });
+}
+
+function updateImage(obj, newPath) {
+    let data = [newPath, obj.productId];
+    console.log(data);
+    let sql = `UPDATE products
+                SET image=?
+                WHERE id=?`;
+    db.run(sql, data);
 }

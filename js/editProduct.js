@@ -4,6 +4,7 @@ const params = new URLSearchParams(location.search);
 const userId = params.get('user');
 const productId = params.get('product-id');
 const editBTN = document.getElementById('editBTN');
+const editImageBTN = document.getElementById('editImageBTN');
 const inputUrl = document.getElementById('inputUrl');
 const inputStock = document.getElementById('inputStock');
 const inputMinStock = document.getElementById('inputMinStock');
@@ -11,7 +12,8 @@ const inputName = document.getElementById('inputName');
 const productTitle = document.getElementById('productTitle');
 const textareaDescription = document.getElementById('textareaDescription');
 const productCategory = document.getElementById('ddlViewBy');
-// const category = "";
+const productImage = document.getElementById('productImage');
+let actualImage;
 
 async function setForm(productId) {
     const result = await window.product.getProduct(productId);
@@ -23,6 +25,8 @@ async function setForm(productId) {
     inputMinStock.value = result.getProduct.stock_min;
     textareaDescription.value = result.getProduct.description;
     setCategories(userId, result.getProduct.category_name);
+    actualImage = result.getProduct.image
+    productImage.setAttribute('src', result.getProduct.image)
     // category = result.getProduct.category_name; 
 }
 
@@ -31,9 +35,9 @@ async function setCategories(userId, categoryName) {
     let html;
     let i = 1;
     result.getAllCategories.forEach(category => {
-        if(category.name == categoryName){
+        if (category.name == categoryName) {
             html += `<option selected value="${i}">${category.name}</option>`
-        }else{
+        } else {
             html += `<option value="${i}">${category.name}</option>`
         }
         i++;
@@ -41,7 +45,7 @@ async function setCategories(userId, categoryName) {
     productCategory.innerHTML = html;
 }
 
-editBTN.addEventListener('click', async(e) => {
+editBTN.addEventListener('click', async (e) => {
     const obj = {
         userId: userId,
         productId: productId,
@@ -58,11 +62,33 @@ editBTN.addEventListener('click', async(e) => {
         console.log('ko');
         alert("El nombre del producto ya existe en la categoria que elegiste.")
         return;
-    }else{
+    } else {
         location.href = `../html/productDetail.html?user=${userId}&product-id=${productId}`;
         console.log('ok');
     }
 })
+
+editImageBTN.addEventListener('click', async () => {
+    console.log(actualImage);
+    let filePath;
+    const imgFile = await window.product.chooseImg();
+    if (imgFile.chooseImg.canceled) {
+        return;
+    }
+    filePath = imgFile.chooseImg.filePaths[0];
+    const obj = {
+        userId: userId,
+        productId: productId,
+        filePath: filePath,
+        actualImage: actualImage,
+        table: 'products',
+    }
+    console.log(obj);
+    window.product.changeProductImage(obj);
+    location.reload();
+})
+
+
 
 
 setForm(productId);

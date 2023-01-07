@@ -28,7 +28,9 @@ contextBridge.exposeInMainWorld('product', {
     getSearchedProducts: (obj) => ipcRenderer.invoke('getSearchedProducts', obj),
     changeFavorite: (productId) => ipcRenderer.invoke("changeFavorite", productId),
     chooseImg: () => ipcRenderer.invoke('chooseImg'),
+    changeProductImage: (obj) => ipcRenderer.invoke('changeProductImage', obj),
 })
+
 
 
 
