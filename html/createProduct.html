@@ -54,11 +54,15 @@
                     <label for="productName" class="form-label">Product name</label>
                     <input type="text" class="form-control" id="productName">
                 </div>
-                <select id="ddlViewBy">
-                    <option value="1">test1</option>
-                    <option value="2">test2</option>
-                    <option value="3">test3</option>
-                </select>
+                <div class="mb-3">
+                    <label for="productUrl" class="form-label">Categoria</label>
+                    <select id="ddlViewBy" class="form-control">
+                        <option value="1">test1</option>
+                        <option value="2">test2</option>
+                        <option value="3">test3</option>
+                    </select>
+                </div>
+                
                 <div class="mb-3">
                     <label for="productUrl" class="form-label">Product Url</label>
                     <input type="url" class="form-control" id="productUrl">
@@ -73,6 +77,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="productImg" class="form-label">Imagen</label>
+                    <button type="button" class="btn btn-primary" id="chooseFileBTN">Buscar</button>
+                    
                     <input type="url" class="form-control" id="productImg">
                 </div>
                 <div class="mb-3">
@@ -80,8 +86,6 @@
                     <input type="text" class="form-control" id="description">
                 </div>
                 <button type="button" class="btn btn-primary" id="createProductBTN">Create</button>
-                <!-- <button type="button" class="btn btn-primary">Cancel</button> -->
-                <p id="message"></p>
             </form>
         </div>
     </div>

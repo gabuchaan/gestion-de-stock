@@ -1,19 +1,18 @@
 import { setClickEventOfMenu, checkIfNotEmpty, isValidHttpUrl } from './common.js';
 
-const createProductBTN = document.getElementById('createProductBTN');
-const message = document.getElementById('message');
-const productCategory = document.getElementById('ddlViewBy');
 let params = new URLSearchParams(location.search);
 const userId = params.get('user');
+const createProductBTN = document.getElementById('createProductBTN');
+const chooseFileBTN = document.getElementById('chooseFileBTN');
+const productName = document.getElementById('productName');
+const productUrl = document.getElementById('productUrl');
+const cantidad = document.getElementById('cantidad');
+const cantidadMin = document.getElementById('cantidadMin');
+const productImg = document.getElementById('productImg');
+const description = document.getElementById('description');
+const productCategory = document.getElementById('ddlViewBy');
 
 createProductBTN.addEventListener('click', async (event) => {
-    const productName = document.getElementById('productName');
-    const productUrl = document.getElementById('productUrl');
-    const cantidad = document.getElementById('cantidad');
-    const cantidadMin = document.getElementById('cantidadMin');
-    const productImg = document.getElementById('productImg');
-    const description = document.getElementById('description');
-    const productCategory = document.getElementById('ddlViewBy');
 
     const obj = {
         userId: userId,
@@ -23,7 +22,7 @@ createProductBTN.addEventListener('click', async (event) => {
         cantidadMin: cantidadMin.value,
         productImg: productImg.value,
         description: description.value,
-        productCategory: productCategory.options[productCategory.selectedIndex].text,
+        productCategory: productCategory.options[productCategory.selectedIndex].text, 
     }
 
     if (!checkIfNotEmpty(obj.productName)) {
@@ -65,6 +64,15 @@ async function setCategories(userId) {
     });
     productCategory.innerHTML = html;
 }
-console.log(userId);
+
+chooseFileBTN.addEventListener('click', async () => {
+    const imgFile = await window.product.chooseImg();
+    if (imgFile.chooseImg.canceled) {
+        productImg.value = '';
+    }else{
+        productImg.value = imgFile.chooseImg.filePaths[0];
+    }
+})
+
 setCategories(userId);
 setClickEventOfMenu(userId);

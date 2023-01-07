@@ -1,6 +1,7 @@
 
-const { app, BrowserWindow, ipcMain, Notification, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, shell, dialog } = require('electron');
 const { resolve } = require('path');
+const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./test.db');
@@ -150,11 +151,13 @@ ipcMain.handle('getAllProductsOfCategory', async (event, obj) => {
 });
 
 ipcMain.handle('createProduct', async (event, obj) => {
-    categoryId = await getCategoryId(obj);
+    let categoryId = await getCategoryId(obj);
     result = await validateProduct(obj, categoryId);
     if (!result) {
         return { 'createProduct': false };
     }
+    const imagePath = saveImageFile(path.join(__dirname, `\\Img\\ProductImage\\${obj.userId}`), obj.productImg);
+    obj.productImg = imagePath;
     resultFinal = await createProduct(obj, categoryId);
     return { 'createProduct': true };
 });
@@ -196,6 +199,14 @@ ipcMain.handle('changeFavorite', async (event, productId) => {
     await changeFavorite(productId);
 })
 
+
+ipcMain.handle('chooseImg', async () => {
+    // console.log(__dirname);
+    const file = await dialog.showOpenDialog({filters: [{name: 'Images', extensions: ['jpg', 'png', 'gif']}]});
+    console.log(file);
+    return {'chooseImg': file};
+
+})
 // --------------------------------------------
 // ----------------- FUNCTIONS ----------------
 // --------------------------------------------
@@ -356,7 +367,7 @@ function createProduct(obj, categoryId) {
 
 function getProduct(params) {
     return new Promise((resolve, reject) => {
-        db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, categories.name as category_name, products.favorite FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
+        db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, products.image, categories.name as category_name, products.favorite FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
             // console.log(row);
 
             return resolve(row);
@@ -415,15 +426,32 @@ function changeFavorite(productId) {
         if (row.favorite == 0) {
             let data = [1, productId];
             let sql = `UPDATE products
-                                    SET favorite = ?
-                                    WHERE id=?`;
+                        SET favorite = ?
+                        WHERE id=?`;
             db.run(sql, data);
         } else {
             let data = [0, productId];
             let sql = `UPDATE products
-                                    SET favorite = ?
-                                    WHERE id=?`;
+                        SET favorite = ?
+                        WHERE id=?`;
             db.run(sql, data);
         }
     });
+}
+
+function saveImageFile(directoryPath, imagePath) {
+    if (imagePath.length == 0) {
+        return path.join(__dirname, `\\Img\\defaultProduct.jpg`);
+    }
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+    }
+    const randomName = Math.random().toString(36).substring(2,12);
+    const fileName = randomName + path.extname(imagePath);
+    const filePath = path.join(directoryPath, fileName); 
+
+    fs.copyFile(imagePath, filePath, function(e) {
+        if(e) throw e;
+    });
+    return filePath;
 }
