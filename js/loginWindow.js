@@ -15,8 +15,11 @@ loginBtn.addEventListener('click', async (event) => {
     //     message.innerText = "Login incorrect";
     // }
     result = await window.auth.login(obj);
+    
     if (!result.login) {
         message.innerText = "Login incorrect";
+    }else{
+
+        window.location.href = './html/main.html?user=' +  encodeURIComponent(result.login);
     }
-    window.location.href = './html/main.html?user=' +  encodeURIComponent(result.login);
 })

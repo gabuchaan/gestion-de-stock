@@ -1,4 +1,4 @@
-import { setClickEventOfMenu } from "./common.js";
+import { setClickEventOfMenu, checkIfNotEmpty } from "./common.js";
 
 const params = new URLSearchParams(location.search);
 const userId = params.get('user');
@@ -19,6 +19,18 @@ editPassBTN.addEventListener('click', async () => {
 
     let userData = await window.auth.getProfile(userId);
 
+    if (!checkIfNotEmpty(obj.password)) {
+        alert("Tienes que introducir el password");
+        return;
+    }
+    if (!checkIfNotEmpty(obj.newPassword)) {
+        alert("Tienes que introducir el nuevo password");
+        return;
+    }
+    if (!checkIfNotEmpty(obj.confirmPassword)) {
+        alert("Tienes que introducir el nuevo password");
+        return;
+    }
 
     if (userData.getProfile.password != obj.password) {
         alert('Password incorrect');

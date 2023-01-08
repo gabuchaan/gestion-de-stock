@@ -15,6 +15,7 @@ const deleteProductBTN = document.getElementById('deleteProductBTN');
 const showWebBTN = document.getElementById('showWebBTN');
 const favoriteBTN = document.getElementById('favoriteBTN');
 const productImage = document.getElementById('productImage');
+const webLink = document.getElementById('webLink');
 
 async function setProductValues() {
     const result = await window.product.getProduct(productId);
@@ -29,14 +30,13 @@ async function setProductValues() {
     if(result.getProduct.favorite == 0){
         favoriteBTN.innerHTML = '<img src="../Img/star_25.png" alt="homeBtn" width="30" height="30" id="favoriteIcon">'
     }else{
-        
         favoriteBTN.innerHTML = '<img src="../Img/star-icon.png" alt="homeBtn" width="30" height="30" id="favoriteIcon">'
     }
 
     if(result.getProduct.web_url == ""){
         showWebBTN.setAttribute('disabled', "");
     }else{
-        showWebBTN.setAttribute('href', result.getProduct.web_url);
+        webLink.setAttribute('href', result.getProduct.web_url);
     }
     
 }

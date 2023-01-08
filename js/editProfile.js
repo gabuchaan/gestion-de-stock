@@ -1,4 +1,4 @@
-import { setClickEventOfMenu } from "./common.js";
+import { setClickEventOfMenu, checkIfNotEmpty, checkIfEmail } from "./common.js";
 
 const params = new URLSearchParams(location.search);
 const userId = params.get('user');
@@ -44,6 +44,15 @@ editBTN.addEventListener('click', async () => {
         id: userId,
         name: name,
         email: email,
+    }
+
+    if (!checkIfNotEmpty(obj.name)) {
+        alert("Tienes que introducir el nombre");
+        return;
+    }
+    if (!checkIfEmail(obj.email)) {
+        alert('El Email no tiene formato de Email')
+        return;
     }
 
     await window.auth.editProfile(obj);

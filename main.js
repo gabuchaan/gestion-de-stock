@@ -85,6 +85,7 @@ app.on('window-all-closed', () => {
 // ----- LOGIN -----
 
 ipcMain.handle('login', async (event, obj) => {
+    console.log(obj);
     let result = await validateLogin(obj);
     // if (!result) {
     //     return { 'login': false }
@@ -143,8 +144,8 @@ ipcMain.handle('getAllCategories', async (event, userId) => {
 
 ipcMain.handle('deleteCategory', async (event, obj) => {
     let categoryId = await getCategoryId(obj);
-    await deleteProducts(categoryId);
-    await deleteCategory(categoryId);
+    deleteProducts(categoryId);
+    deleteCategory(categoryId);
 })
 
 // ----- PRODUCT -----

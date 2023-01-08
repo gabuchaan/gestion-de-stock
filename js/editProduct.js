@@ -1,4 +1,4 @@
-import { setClickEventOfMenu } from "./common.js";
+import { setClickEventOfMenu, checkIfNotEmpty } from "./common.js";
 
 const params = new URLSearchParams(location.search);
 const userId = params.get('user');
@@ -57,6 +57,11 @@ editBTN.addEventListener('click', async (e) => {
         productCategory: productCategory.options[productCategory.selectedIndex].text,
     }
 
+    if (!checkIfNotEmpty(obj.productName)) {
+        alert("Tienes que introducir el nombre");
+        return;
+    }
+
     let result = await window.product.updateProduct(obj);
     if (!result.updateProduct) {
         console.log('ko');
@@ -64,7 +69,6 @@ editBTN.addEventListener('click', async (e) => {
         return;
     } else {
         location.href = `../html/productDetail.html?user=${userId}&product-id=${productId}`;
-        console.log('ok');
     }
 })
 
