@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('auth', {
     getProfile: (userId) => ipcRenderer.invoke("getProfile", userId),
     editProfile: (obj) => ipcRenderer.invoke("editProfile", obj),
     changePass: (obj) => ipcRenderer.invoke("changePass", obj),
+    changeUserImage: (obj) => ipcRenderer.invoke('changeUserImage', obj),
 })
 
 contextBridge.exposeInMainWorld('tryRegister', {

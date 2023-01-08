@@ -36,7 +36,6 @@ const createLoginWindow = () => {
 
 
     const handleUrlOpen = (e, url) => {
-        // console.log(url);
         if (url.match(/^http/)) {
             e.preventDefault();
             shell.openExternal(url);
@@ -90,7 +89,6 @@ ipcMain.handle('login', async (event, obj) => {
     // if (!result) {
     //     return { 'login': false }
     // }
-    // console.log(result);
     // global.userId = result;
     return { 'login': result }
 });
@@ -117,6 +115,12 @@ ipcMain.handle('editProfile', async (event, obj) => {
 ipcMain.handle('changePass', async (event, obj) => {
 
     changePass(obj);
+})
+
+ipcMain.handle('changeUserImage', async (event, obj) => {
+    deleteActualUserImage(obj);
+    const imagePath = await saveUserImageFile(path.join(__dirname, `\\Img\\UserImage\\${obj.userId}`), obj.filePath);
+    updateUserImage(obj, imagePath);
 })
 
 // ----- CATEGORY -----
@@ -200,9 +204,7 @@ ipcMain.handle('changeFavorite', async (event, productId) => {
 })
 
 ipcMain.handle('chooseImg', async () => {
-    // console.log(__dirname);
     const file = await dialog.showOpenDialog({filters: [{name: 'Images', extensions: ['jpg', 'png', 'gif']}]});
-    console.log(file);
     return {'chooseImg': file};
 
 })
@@ -279,7 +281,7 @@ function getProfile(userId) {
 }
 
 function createUser(obj) {
-    db.run(`insert into users(name,email,password) values(?,?,?)`, [obj.userName, obj.email, obj.password]);
+    db.run(`insert into users(name,email,password, thumbnail) values(?,?,?,?)`, [obj.userName, obj.email, obj.password, path.join(__dirname, `\\Img\\default-user-avatar-300x300.png`)]);
 }
 
 function editProfile(obj) {
@@ -291,7 +293,6 @@ function editProfile(obj) {
 }
 
 function changePass(obj) {
-    console.log(obj);
     let data = [obj.newPassword, obj.id];
     let sql = `UPDATE users
                 SET password=?
@@ -299,12 +300,25 @@ function changePass(obj) {
     db.run(sql, data);
 }
 
+function saveUserImageFile(directoryPath, imagePath) {
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+    }
+    const randomName = Math.random().toString(36).substring(2,12);
+    const fileName = randomName + path.extname(imagePath);
+    const filePath = path.join(directoryPath, fileName); 
+
+    fs.copyFile(imagePath, filePath, function(e) {
+        if(e) throw e;
+    });
+    return filePath;
+}
+
 // ----- CATEGORY -----
 
 function validateCategory(obj) {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM categories where name = ? and user_id = ?", [obj.categoryName, obj.userId], (err, rows) => {
-            console.log(rows.length);
             if (rows.length == 0) {
                 return resolve(true)
             }
@@ -376,7 +390,6 @@ function createProduct(obj, categoryId) {
 function getProduct(params) {
     return new Promise((resolve, reject) => {
         db.get("SELECT products.name, products.stock, products.stock_min, products.description, products.web_url, products.image, categories.name as category_name, products.favorite FROM products INNER JOIN categories on categories.id = products.category_id where products.id = ?", [params], (err, row) => {
-            // console.log(row);
 
             return resolve(row);
         });
@@ -405,11 +418,9 @@ function deleteProducts(categoryId) {
 
 function getSearchedProducts(obj) {
     return new Promise((resolve, reject) => {
-        console.log('hola');
         db.all("SELECT products.name as name, products.id, products.stock, products.stock_min, categories.name as categoryName FROM products INNER JOIN categories on categories.id = products.category_id WHERE user_id = ? AND products.name LIKE ?", [obj.userId, '%' + obj.word + '%'], (err, rows) => {
             let products = [];
             rows.forEach(function (row) {
-                console.log(row);
                 products.push(row);
             });
             return resolve(products);
@@ -469,6 +480,16 @@ function saveImageFile(directoryPath, imagePath) {
 
 // ----- COMMON -----
 
+function deleteActualUserImage(obj) {
+    console.log(obj.actualImage);
+    if (obj.actualImage == path.join(__dirname, `\\Img\\default-user-avatar-300x300.png`)) {
+        return;
+    }
+    fs.unlink(obj.actualImage, function (e) {
+        if (e) throw e;
+    });
+}
+
 function deleteActualImage(obj) {
     if (obj.actualImage == path.join(__dirname, `\\Img\\defaultProduct.jpg`)) {
         return;
@@ -478,9 +499,16 @@ function deleteActualImage(obj) {
     });
 }
 
+function updateUserImage(obj, newPath) {
+    let data = [newPath, obj.userId];
+    let sql = `UPDATE users
+                SET thumbnail=?
+                WHERE id=?`;
+    db.run(sql, data);
+}
+
 function updateImage(obj, newPath) {
     let data = [newPath, obj.productId];
-    console.log(data);
     let sql = `UPDATE products
                 SET image=?
                 WHERE id=?`;

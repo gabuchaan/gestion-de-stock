@@ -1,5 +1,12 @@
 
-function setClickEventOfMenu(userId) {
+async function setClickEventOfMenu(userId) {
+
+    console.log(userId);
+    const userImage = document.getElementById('userImage');
+    const userData = await window.auth.getProfile(userId);
+    console.log(userData);
+    userImage.setAttribute('src', userData.getProfile.thumbnail)
+
     homeBTN.addEventListener('click', () => {
         window.location.href = '../html/main.html?user=' + userId;
     })

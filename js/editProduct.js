@@ -80,8 +80,7 @@ editImageBTN.addEventListener('click', async () => {
         userId: userId,
         productId: productId,
         filePath: filePath,
-        actualImage: actualImage,
-        table: 'products',
+        actualImage: actualImage
     }
     console.log(obj);
     window.product.changeProductImage(obj);
